@@ -255,10 +255,10 @@
         .section-accessibilities {
           margin-top: 1040px;
         }
-        @media (max-width: 400px) and (min-height: 800px) {
-          .section-accessibilities {
-            margin-top: 840px;
-          }
+      }
+      @media (max-width: 400px) and (min-height: 800px) {
+        .section-accessibilities {
+          margin-top: 840px;
         }
       }
       .parent-name,
@@ -267,31 +267,6 @@
       }
       h3 {
         font-size: 29px;
-      }
-
-      /* Tối ưu hiệu ứng trái tim - hiển thị trên toàn bộ trang */
-      .snowfall-flakes {
-        position: fixed !important;
-        pointer-events: none !important;
-      }
-
-      @media screen and (max-width: 768px) {
-        .snowfall-flakes {
-          min-width: 8px !important;
-          min-height: 8px !important;
-          max-width: 12px !important;
-          max-height: 12px !important;
-        }
-      }
-
-      @media screen and (max-width: 480px) {
-        .snowfall-flakes {
-          min-width: 10px !important;
-          min-height: 10px !important;
-          max-width: 15px !important;
-          max-height: 15px !important;
-          opacity: 0.9 !important;
-        }
       }
     </style>
 
@@ -557,6 +532,7 @@
         text-overflow: ellipsis;
         display: -webkit-box;
         -webkit-line-clamp: 3;
+        line-clamp: 3;
         -webkit-box-orient: vertical;
       }
 
@@ -3017,7 +2993,9 @@
             if (checkValue && checkValue.constructor === Object) {
               parsed[key] = checkValue;
             }
-          } catch (e) {}
+          } catch (e) {
+            // Silently skip parse errors
+          }
         });
         return parsed;
       }
@@ -3459,6 +3437,7 @@
           right: calc(50% - 52px);
           bottom: 80px;
           -webkit-animation: arrow 0.5s 1s infinite ease-in-out alternate;
+          animation: arrow 0.5s 1s infinite ease-in-out alternate;
           z-index: 999;
           display: block !important;
           visibility: hidden;
@@ -3466,6 +3445,7 @@
 
         .mouse-scroll-on-mobile:hover {
           -webkit-animation-play-state: paused;
+          animation-play-state: paused;
         }
 
         .mouse-scroll-on-mobile .mouse-scroll-on-mobile-text {
@@ -3486,11 +3466,15 @@
           width: 30px;
           background: #de4659;
           -webkit-transform: rotate(240deg);
+          transform: rotate(240deg);
           bottom: 80px;
           left: 42px;
           -webkit-border-radius: 4px;
+          border-radius: 4px;
           -webkit-transform-origin: 5px 50%;
+          transform-origin: 5px 50%;
           -webkit-animation: leftArrow 0.5s 1s infinite ease-out alternate;
+          animation: leftArrow 0.5s 1s infinite ease-out alternate;
         }
 
         .mouse-scroll-on-mobile .mouse-scroll-on-mobile-right {
@@ -3499,11 +3483,15 @@
           width: 30px;
           background: #de4659;
           -webkit-transform: rotate(-60deg);
+          transform: rotate(-60deg);
           bottom: 80px;
           left: 46px;
           -webkit-border-radius: 4px;
+          border-radius: 4px;
           -webkit-transform-origin: 5px 50%;
+          transform-origin: 5px 50%;
           -webkit-animation: rightArrow 0.5s 1s infinite ease-out alternate;
+          animation: rightArrow 0.5s 1s infinite ease-out alternate;
         }
       }
 
@@ -3517,15 +3505,39 @@
         }
       }
 
+      @keyframes arrow {
+        0% {
+          bottom: 0;
+        }
+
+        100% {
+          bottom: 40px;
+        }
+      }
+
       @-webkit-keyframes leftArrow {
         100% {
           -webkit-transform: rotate(225deg);
+          transform: rotate(225deg);
+        }
+      }
+
+      @keyframes leftArrow {
+        100% {
+          transform: rotate(225deg);
         }
       }
 
       @-webkit-keyframes rightArrow {
         100% {
           -webkit-transform: rotate(-45deg);
+          transform: rotate(-45deg);
+        }
+      }
+
+      @keyframes rightArrow {
+        100% {
+          transform: rotate(-45deg);
         }
       }
     </style>
@@ -3537,6 +3549,23 @@
 
     <style type="text/css">
       @-webkit-keyframes biilogo-pulse {
+        from {
+          -webkit-transform: scale3d(1, 1, 1);
+          transform: scale3d(1, 1, 1);
+        }
+
+        50% {
+          -webkit-transform: scale3d(0.95, 0.95, 0.95);
+          transform: scale3d(0.95, 0.95, 0.95);
+        }
+
+        to {
+          -webkit-transform: scale3d(1, 1, 1);
+          transform: scale3d(1, 1, 1);
+        }
+      }
+
+      @keyframes biilogo-pulse {
         from {
           -webkit-transform: scale3d(1, 1, 1);
           transform: scale3d(1, 1, 1);
@@ -3585,10 +3614,6 @@
         display: block;
         width: 40px;
         height: 40px;
-        -webkit-border-radius: 50%;
-        -moz-border-radius: 50%;
-        -o-border-radius: 50%;
-        -ms-border-radius: 50%;
         border-radius: 50%;
         background-color: #df4758;
         padding-top: 7px;
@@ -3600,12 +3625,8 @@
       .bii-player:after {
         content: "";
         position: absolute;
-        -webkit-border-radius: 50%;
-        -moz-border-radius: 50%;
-        -o-border-radius: 50%;
-        -ms-border-radius: 50%;
         border-radius: 50%;
-        z-index: -1;
+        z-index: 1;
         background-color: rgba(242, 59, 67, 0.3);
         width: 120%;
         height: 120%;
