@@ -1,0 +1,802 @@
+
+      /* Global red scrollbar (Firefox + WebKit) */
+      * {
+        scrollbar-width: thin;
+        scrollbar-color: #e60023 #ffe5e5;
+      }
+      *::-webkit-scrollbar {
+        width: 12px;
+        height: 12px;
+      }
+      *::-webkit-scrollbar-track {
+        background: #ffe5e5;
+        border-radius: 10px;
+      }
+      *::-webkit-scrollbar-thumb {
+        background: linear-gradient(180deg, #ff0000, #e60023);
+        border-radius: 10px;
+        border: 2px solid #ffe5e5;
+      }
+      *::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(180deg, #ff1a1a, #ff0000);
+        box-shadow: 0 0 6px rgba(230, 0, 35, 0.4);
+      }
+      *::-webkit-scrollbar-thumb:active {
+        background: #cc0000;
+      }
+      .section-accessibilities {
+        margin-top: 0px;
+      }
+
+      @media (max-width: 638px) {
+        .section-accessibilities {
+          margin-top: 640px;
+        }
+      }
+      @media (max-width: 550px) and (max-height: 721px) {
+        .section-accessibilities {
+          margin-top: 840px;
+        }
+      }
+
+      @media (max-width: 400px) {
+        .section-accessibilities {
+          margin-top: 1040px;
+        }
+      }
+      @media (max-width: 400px) and (min-height: 800px) {
+        .section-accessibilities {
+          margin-top: 840px;
+        }
+      }
+      .parent-name,
+      .parent-title {
+        font-size: 18px; /* Thay đổi số 18 thành kích thước bạn muốn */
+      }
+      h3 {
+        font-size: 29px;
+      }
+
+
+      
+      .global-heart {
+        position: absolute;
+        left: 0;
+        top: 0;
+        pointer-events: none;
+        will-change: transform, opacity;
+        z-index: 9999;
+      }
+
+      /* Tăng cỡ chữ cho phần Sổ Lưu Bút */
+      #rsvp .section-title h2 {
+        font-size: 48px !important;
+      }
+
+      #rsvp .widget-title.cursive {
+        font-size: 22px !important;
+        line-height: 1.6 !important;
+      }
+
+      #rsvp .wish-box-item strong {
+        font-size: 20px !important;
+        font-weight: 600 !important;
+      }
+
+      #rsvp .wish-box-item p {
+        font-size: 20px !important;
+        line-height: 1.7 !important;
+      }
+
+      #rsvp .form-control {
+        font-size: 20px !important;
+        padding: 14px !important;
+      }
+
+      #rsvp .btn {
+        font-size: 20px !important;
+        padding: 14px 35px !important;
+      }
+
+      #rsvp label {
+        font-size: 18px !important;
+      }
+
+      /* Bo tròn khung to bên ngoài chứa các lời chúc */
+      #rsvp .wish-box {
+        border-radius: 18px !important;
+        padding: 10px !important;
+        background: #f8f9fa !important;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05) !important;
+        /* Scroll area inside rounded box */
+        overflow-y: auto;
+        overflow-x: hidden;
+        /* Firefox modern scrollbar */
+        scrollbar-width: thin;
+        scrollbar-color: #e60023 #ffe5e5;
+        scrollbar-gutter: stable;
+      }
+
+      /* WebKit/Blink scrollbar styling - Modern & Smooth */
+      #rsvp .wish-box::-webkit-scrollbar {
+        width: 12px;
+        background: transparent;
+      }
+
+      #rsvp .wish-box::-webkit-scrollbar-track {
+        background: #ffe5e5;
+        border-radius: 10px;
+        margin: 2px;
+      }
+
+      #rsvp .wish-box::-webkit-scrollbar-thumb {
+        background: linear-gradient(180deg, #ff0000, #e60023);
+        border-radius: 10px;
+        border: 2px solid #ffe5e5;
+        transition: background 0.3s ease;
+      }
+
+      #rsvp .wish-box::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(180deg, #ff1a1a, #ff0000);
+        box-shadow: 0 0 6px rgba(230, 0, 35, 0.4);
+      }
+
+      #rsvp .wish-box::-webkit-scrollbar-thumb:active {
+        background: #cc0000;
+      }
+
+      /* Màu xen kẽ cho khung hiển thị lời chúc */
+      #rsvp .wish-box-item {
+        padding: 10px !important;
+        margin-bottom: 10px !important;
+        border-radius: 8px !important;
+        transition: all 0.3s ease !important;
+      }
+
+      #rsvp .wish-box-item:nth-child(odd) {
+        background-color: #fff !important;
+      }
+
+      #rsvp .wish-box-item:nth-child(even) {
+        background-color: #ffe5ec !important; /* Màu hồng nhạt */
+      }
+
+      #rsvp .wish-box-item:hover {
+        box-shadow: 0 4px 12px rgba(232, 93, 117, 0.2) !important;
+        transform: translateY(-2px) !important;
+      }
+
+      /* Gợi ý lời chúc hiển thị theo chiều dọc */
+      .wishes-autocomplete-content #wishSuggestions {
+        display: flex;
+        flex-direction: column; /* hiển thị theo chiều dọc */
+        gap: 8px;
+        padding: 8px 4px;
+        margin: 8px 0 0;
+        list-style: none;
+        max-height: 300px; /* giới hạn chiều cao nếu cần */
+        overflow-y: auto; /* cuộn dọc nếu quá nhiều gợi ý */
+      }
+      .wishes-autocomplete-content #wishSuggestions li {
+        width: 100%; /* chiếm full width */
+      }
+      .wishes-autocomplete-content #wishSuggestions li a {
+        display: block;
+        width: 100%;
+        white-space: normal; /* cho phép xuống dòng */
+      }
+
+      /* Tăng cỡ chữ cho thông báo gửi lời chúc thành công (SweetAlert2) */
+      .swal2-popup.wish-success-popup {
+        border-radius: 16px !important;
+      }
+      .wish-success-title {
+        font-size: 32px !important;
+        line-height: 1.3 !important;
+      }
+      .wish-success-html {
+        font-size: 22px !important;
+        line-height: 1.6 !important;
+      }
+
+      /* Tăng cỡ chữ cho tất cả thông báo SweetAlert2 (thành công, lỗi, cảnh báo) */
+      .swal2-popup {
+        font-size: 18px !important;
+      }
+      .swal2-title {
+        font-size: 32px !important;
+        line-height: 1.3 !important;
+      }
+      .swal2-html-container {
+        font-size: 22px !important;
+        line-height: 1.6 !important;
+      }
+      .swal2-confirm,
+      .swal2-cancel,
+      .swal2-deny {
+        font-size: 20px !important;
+        padding: 12px 32px !important;
+      }
+
+      @media (max-width: 768px) {
+        #rsvp .section-title h2 {
+          font-size: 36px !important;
+        }
+
+        #rsvp .widget-title.cursive {
+          font-size: 20px !important;
+        }
+
+        #rsvp .wish-box-item strong {
+          font-size: 20px !important;
+        }
+
+        #rsvp .wish-box-item p {
+          font-size: 20px !important;
+        }
+
+        #rsvp .wish-box-item {
+          padding: 12px !important;
+          margin-bottom: 12px !important;
+        }
+      }
+
+      /* Notification toast cho lời chúc */
+      .wish-notification-container {
+        position: fixed;
+        top: 80px;
+        right: 20px;
+        z-index: 9998;
+        max-width: 350px;
+        width: 100%;
+      }
+
+      .wish-notification {
+        background: linear-gradient(135deg, #fff 0%, #ffe5ec 100%);
+        border-left: 4px solid #df4758;
+        border-radius: 12px;
+        padding: 16px 20px;
+        margin-bottom: 12px;
+        box-shadow: 0 4px 20px rgba(223, 71, 88, 0.3);
+        animation: fadeInScale 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        cursor: pointer;
+        transition: all 0.4s ease;
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      .wish-notification:hover {
+        transform: translateX(-5px) scale(1.02);
+        box-shadow: 0 6px 25px rgba(223, 71, 88, 0.4);
+      }
+
+      .wish-notification.fade-out {
+        animation: fadeOutScale 0.6s cubic-bezier(0.36, 0, 0.66, -0.56) forwards;
+      }
+
+      .wish-notification-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 8px;
+      }
+
+      .wish-notification-name {
+        font-weight: 600;
+        font-size: 18px;
+        color: #df4758;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .wish-notification-close {
+        background: none;
+        border: none;
+        font-size: 22px;
+        color: #999;
+        cursor: pointer;
+        padding: 0;
+        width: 26px;
+        height: 26px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: all 0.2s;
+      }
+
+      .wish-notification-close:hover {
+        background: rgba(223, 71, 88, 0.1);
+        color: #df4758;
+      }
+
+      .wish-notification-message {
+        font-size: 16px;
+        color: #555;
+        line-height: 1.6;
+        max-height: 80px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        line-clamp: 3;
+        -webkit-box-orient: vertical;
+      }
+
+      @keyframes fadeInScale {
+        0% {
+          opacity: 0;
+          transform: translateX(100px) scale(0.8);
+        }
+        100% {
+          opacity: 1;
+          transform: translateX(0) scale(1);
+        }
+      }
+
+      @keyframes fadeOutScale {
+        0% {
+          opacity: 1;
+          transform: translateX(0) scale(1);
+        }
+        100% {
+          opacity: 0;
+          transform: translateX(100px) scale(0.8);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .wish-notification-container {
+          top: 60px;
+          right: 10px;
+          left: 10px;
+          max-width: none;
+        }
+
+        .wish-notification {
+          padding: 12px 16px;
+        }
+
+        .wish-notification-name {
+          font-size: 17px;
+        }
+
+        .wish-notification-message {
+          font-size: 15px;
+        }
+      }
+    
+
+      
+      /* Banner caption text styling */
+      .banner_caption_text {
+        text-align: center;
+      }
+
+      /* Names heading styling with cursive font */
+      .hero-style-1 .banner_caption_text h2 {
+        font-family: "Great Vibes", cursive;
+        font-size: clamp(56px, 9vw, 72px) !important;
+        line-height: 1.2;
+        margin: 20px 0;
+        color: #fff;
+      }
+
+      /* Mobile view (default) - Stack vertically */
+      .hero-style-1 .banner_caption_text h2 {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .hero-style-1 .banner_caption_text h2 span {
+        display: block;
+        font-size: inherit !important;
+      }
+
+      /* Desktop view - Horizontal alignment */
+      @media (min-width: 768px) {
+        .hero-style-1 .banner_caption_text h2 {
+          flex-direction: row;
+          justify-content: center;
+          gap: 15px;
+        }
+
+        .hero-style-1 .banner_caption_text h2 span {
+          display: inline;
+        }
+      }
+
+      /* Heart icons spacing */
+      .heart-arrow,
+      .heart-arrow1,
+      .heart-arrow2 {
+        position: absolute;
+      }
+
+      /* H3 heading styling */
+      .banner_caption_text h3 {
+        margin-bottom: 15px;
+      }
+
+      /* Date text styling */
+      .text-date {
+        margin-top: 20px;
+      }
+
+      .text-date p {
+        font-size: clamp(16px, 3vw, 22px);
+      }
+
+      /* Remove all pseudo-element decorative frames */
+      *::before,
+      *::after {
+        background-image: none !important;
+      }
+
+      /* Fix z-index for "Thêm vào lịch" button - prevent overlap */
+      .atcb-button-wrapper {
+        position: relative;
+        z-index: 10000 !important;
+      }
+
+      .atcb-button {
+        position: relative;
+        z-index: 10000 !important;
+        pointer-events: auto !important;
+      }
+
+      /* Ensure event card content is interactive */
+      .event-stack {
+        position: relative;
+        z-index: 10 !important;
+      }
+
+      .event-stack .event-about,
+      .event-stack .card-info-vendor {
+        position: relative;
+        z-index: 11 !important;
+      }
+
+      /* Prevent banner-event from blocking clicks */
+      .banner-event {
+        pointer-events: none !important;
+      }
+
+      .banner-event .event-img {
+        pointer-events: none !important;
+      }
+
+      /* Calendar Modal */
+      .calendar-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 2147483647; /* raise above all */
+        display: flex;
+        align-items: center; /* center vertically */
+        justify-content: center; /* center horizontally */
+      }
+
+      .calendar-modal-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(5px);
+        z-index: 1;
+      }
+
+      .calendar-modal-content {
+        position: relative;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        min-width: 280px;
+        max-width: 90%;
+        overflow: hidden;
+        animation: modalFadeIn 0.3s ease;
+        z-index: 2;
+        margin: 0; /* centered */
+      }
+
+      .calendar-modal-content a {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start; /* left align rows */
+        gap: 10px;
+        padding: 12px 16px;
+        border-bottom: 1px solid #eee; /* separators */
+      }
+      .calendar-modal-content a:last-child {
+        border-bottom: none;
+      }
+
+      /* Event cards layout & theming */
+      .event-stack {
+        background: #f7f2f5; /* subtle pink background */
+        border-radius: 12px;
+        padding: 16px;
+        position: static !important; /* avoid creating stacking context */
+        z-index: auto !important;
+        overflow: visible;
+      }
+      .event-stack h3 {
+        font-size: 20px; /* reduced title size */
+        margin-bottom: 12px;
+      }
+      .event-card .event-title div {
+        font-size: 18px; /* date/time prominence */
+      }
+      .btn-add-calendar {
+        font-size: 18px !important;
+        padding: 12px 24px !important;
+        border-radius: 999px !important;
+      }
+      .btn-map {
+        display: inline-block;
+        margin-top: 6px;
+        padding: 12px 20px;
+        border: 1px solid #c69;
+        border-radius: 999px;
+        width: 100%;
+        max-width: 240px;
+        color: #7a5563;
+        text-align: center;
+        font-size: 18px;
+      }
+
+      @media (max-width: 768px) {
+        .btn-map {
+          display: block !important;
+          margin: 6px auto 0 !important;
+          font-size: 20px !important;
+        }
+      }
+
+      @keyframes modalFadeIn {
+        from {
+          opacity: 0;
+          transform: scale(0.9);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      .calendar-modal-content a {
+        display: block;
+        padding: 16px 24px;
+        color: #333;
+        text-decoration: none;
+        transition: background 0.2s;
+        font-size: 16px;
+      }
+
+      .calendar-modal-content a:hover {
+        background: #f5f5f5;
+      }
+
+      .calendar-modal-content a i {
+        margin-right: 12px;
+        width: 24px;
+        text-align: center;
+      }
+    
+      /* Active menu styling - only red text color */
+      .navbar-nav > li.active > a {
+        color: #df4758 !important;
+      }
+
+      /* Ensure hover effect is visible */
+      .navbar-nav > li > a:hover {
+        color: #df4758 !important;
+      }
+      /* SlickNav hamburger visibility and behavior */
+      .slicknav_btn {
+        display: none; /* hide on desktop */
+      }
+      .slicknav_menu {
+        display: none; /* default hidden until JS initializes */
+      }
+      @media (max-width: 767px) {
+        /* Hide the desktop nav, show hamburger */
+        #navbar.navbar-nav-wrapper {
+          display: none !important;
+        }
+        .slicknav_menu {
+          display: block !important;
+        }
+        .slicknav_btn {
+          display: inline-flex !important;
+          align-items: center;
+          gap: 8px;
+        }
+        .slicknav_nav {
+          background: rgba(0, 0, 0, 0.95);
+          backdrop-filter: blur(4px);
+          border-radius: 10px;
+        }
+        .slicknav_nav a {
+          color: #fff !important;
+          font-size: 15px;
+          padding: 10px 14px;
+        }
+        .slicknav_nav a:hover {
+          color: #df4758 !important;
+        }
+        /* Position hamburger to the right of logo row */
+        .navbar.navbar-default {
+          overflow: visible !important;
+        }
+        .navbar.navbar-default .container {
+          position: relative;
+        }
+        /* Keep button aligned with logo at top-right */
+        .slicknav_menu {
+          position: absolute;
+          right: 1px;
+          top: 1px;
+          z-index: 2147483646;
+        }
+        /* Make dropdown full-width below header to avoid misalignment */
+        .slicknav_menu .slicknav_nav {
+          position: fixed;
+          left: 0;
+          right: 0;
+          top: 56px; /* below navbar height */
+          width: 100%;
+          max-width: 100%;
+          margin: 0 auto;
+          box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+          z-index: 2147483647; /* over everything */
+          border-radius: 0; /* flush edges for full-width */
+        }
+        .logo.pull-left {
+          padding-right: 48px;
+        } /* ensure space for button */
+        /* Tidy list spacing for full-width panel */
+        .slicknav_nav ul {
+          padding: 8px 10px;
+        }
+      }
+      /* Collapsed/expanded state helpers */
+      .slicknav_btn.slicknav_collapsed .slicknav_icon-bar {
+        background: #fff;
+      }
+      .slicknav_btn.slicknav_open .slicknav_icon-bar {
+        background: #df4758;
+      }
+      /* Ensure mobile dropdown appears over hearts and other effects */
+      .slicknav_menu,
+      .slicknav_nav {
+        z-index: 2147483647 !important;
+      }
+      /* Larger font size for navbar menu on desktop */
+      @media (min-width: 768px) {
+        .navbar-nav > li > a {
+          font-size: 17px !important;
+        }
+      }
+      /* Center navbar menu horizontally on desktop */
+      @media (min-width: 768px) {
+        /* Keep logo and menu on the same row */
+        .navbar.navbar-default .container {
+          display: flex !important;
+          align-items: center !important;
+          justify-content: space-between !important;
+        }
+
+        .logo.pull-left {
+          float: none !important;
+          display: flex !important;
+          align-items: center !important;
+        }
+
+        .navbar-nav-wrapper {
+          float: none !important;
+          display: flex !important;
+          flex: 1 1 auto !important; /* take remaining space */
+          justify-content: center !important;
+        }
+        .navbar-nav-wrapper .navbar-nav {
+          float: none !important;
+          display: flex !important;
+          justify-content: center !important;
+        }
+        .navbar-nav-wrapper .navbar-nav > li {
+          float: none !important;
+        }
+      }
+    
+      /* Wedding Calendar */
+      .wedding-calendar {
+        background: transparent;
+        font-family: "Comfortaa", sans-serif;
+        width: 100%; /* Force full width */
+        margin: 0 auto;
+        position: relative;
+        z-index: 99;
+      }
+      @media (max-width: 767px) {
+        .wedding-calendar {
+          margin-top: 30px;
+        }
+      }
+      .calendar-header h3 {
+        text-align: center;
+        color: #d65d5d;
+        margin: 0 0 15px 0;
+        font-size: 24px; /* Increased from 20px */
+        font-weight: bold;
+      }
+      .calendar-weekdays {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        text-align: center;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #555;
+        border-top: 1px solid #e0c0c0;
+        border-bottom: 1px solid #e0c0c0;
+        padding: 8px 0;
+      }
+      .calendar-days {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 0px; /* Removed gap to allow cells to be wider */
+      }
+      .day {
+        text-align: center;
+        padding: 5px 2px;
+        border-radius: 5px;
+        position: relative;
+        cursor: default;
+      }
+      .day:hover {
+        background-color: #f0f0f0;
+      }
+      .day.empty {
+        background: none;
+      }
+      .solar-date {
+        display: block;
+        font-size: 16px;
+        font-weight: bold;
+        color: #333;
+      }
+      .lunar-date {
+        display: block;
+        font-size: 10px;
+        color: #888;
+      }
+      .day.wedding-day {
+        background-color: #ffe6e6;
+        border: 2px solid #d65d5d;
+        animation: pulse 2s infinite;
+      }
+      .day.wedding-day .solar-date {
+        color: #d65d5d;
+      }
+      .day.wedding-day .lunar-date {
+        color: #d65d5d;
+      }
+      @keyframes pulse {
+        0% {
+          box-shadow: 0 0 0 0 rgba(214, 93, 93, 0.4);
+        }
+        70% {
+          box-shadow: 0 0 0 10px rgba(214, 93, 93, 0);
+        }
+        100% {
+          box-shadow: 0 0 0 0 rgba(214, 93, 93, 0);
+        }
+      }
+    
