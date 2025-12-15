@@ -30,11 +30,11 @@ function showWishNotification(wish, container, onClose) {
     <div class="wish-notification-header">
       <div class="wish-notification-name">
         <span>💌</span>
-        <span>${name}</span>
+        <span style="font-family: 'Farsan', cursive;">${name}</span>
       </div>
       <button class="wish-notification-close" aria-label="Đóng">&times;</button>
     </div>
-    <div class="wish-notification-message">${message}</div>
+    <div class="wish-notification-message" style="font-family: 'Farsan', cursive;">${message}</div>
   `;
 
   setTimeout(
