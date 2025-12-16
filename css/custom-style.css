@@ -103,9 +103,6 @@ h3 {
   z-index: 9999;
 }
 
-
-
-
 #rsvp .widget-title.cursive {
   font-size: 22px !important;
   line-height: 1.6 !important;
@@ -281,7 +278,7 @@ h3 {
 }
 
 @media (max-width: 768px) {
-  #rsvp .section-title h2 {
+  h2 {
     font-size: 36px !important;
   }
 
