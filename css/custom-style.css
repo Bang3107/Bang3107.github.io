@@ -103,10 +103,8 @@ h3 {
   z-index: 9999;
 }
 
-/* Tăng cỡ chữ cho phần Sổ Lưu Bút */
-#rsvp .section-title h2 {
-  font-size: 48px !important;
-}
+
+
 
 #rsvp .widget-title.cursive {
   font-size: 22px !important;
