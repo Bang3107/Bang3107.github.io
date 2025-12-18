@@ -15,55 +15,66 @@
     sessionStorage.setItem(STORAGE_KEY, "true");
   }
 
+  // Hàm tắt Preloader (Core)
+  function hidePreloader(preloader, startTime, force = false) {
+    if (isHidden) return;
+    isHidden = true;
+
+    const elapsed = Date.now() - startTime;
+    const delay = force ? 0 : Math.max(0, MIN_DISPLAY_TIME - elapsed);
+
+    setTimeout(() => {
+      preloader.classList.add("fade-out");
+      document.body.classList.remove("loading");
+
+      // Chỉ lưu session nếu chưa từng lưu
+      if (!hasVisited()) markAsVisited();
+
+      setTimeout(() => {
+        preloader.style.display = "none";
+      }, 800);
+    }, delay);
+  }
+
   function initPreloader() {
+    // 🛠️ FIX QUAN TRỌNG: Đảm bảo phần tử tồn tại trước khi chạy logic
     const preloader = document.querySelector(".preloader-area");
-    if (!preloader) return;
+
+    // Nếu chưa tìm thấy (do script chạy quá sớm), thử lại sau 50ms
+    if (!preloader) {
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initPreloader);
+      }
+      return;
+    }
 
     document.body.classList.add("loading");
     preloader.style.display = "flex";
 
     const startTime = Date.now();
-    const visited = hasVisited(); // ⭐ đã vào trước đó chưa
+    const visited = hasVisited();
 
-    function hidePreloader(force = false) {
-      if (isHidden) return;
-      isHidden = true;
+    /* --- LOGIC XỬ LÝ --- */
 
-      const elapsed = Date.now() - startTime;
-      const delay = force ? 0 : Math.max(0, MIN_DISPLAY_TIME - elapsed);
+    // 1. Luôn đặt timer 10s "cứu hộ" ngay lập tức
+    setTimeout(() => {
+      hidePreloader(preloader, startTime, true);
+    }, MAX_DISPLAY_TIME);
 
-      setTimeout(() => {
-        preloader.classList.add("fade-out");
-        document.body.classList.remove("loading");
-
-        // Chỉ set key khi lần đầu
-        if (!visited) {
-          markAsVisited();
-        }
-
-        setTimeout(() => {
-          preloader.style.display = "none";
-        }, 800);
-      }, delay);
-    }
-
-    /* 🔹 ĐÃ CÓ KEY → KHÔNG CHỜ LOAD, CHỈ HIỆN ĐỦ 3s */
+    // 2. Logic chính
     if (visited) {
-      setTimeout(() => hidePreloader(), MIN_DISPLAY_TIME);
+      // Người cũ: Chỉ hiện 4s rồi tắt, không chờ load
+      setTimeout(() => hidePreloader(preloader, startTime), MIN_DISPLAY_TIME);
     } else {
-    /* 🔹 LẦN ĐẦU → CHỜ LOAD */
+      // Người mới: Chờ load xong + đủ 4s
       if (document.readyState === "complete") {
-        hidePreloader();
+        hidePreloader(preloader, startTime);
       } else {
-        window.addEventListener("load", () => hidePreloader());
+        window.addEventListener("load", () => hidePreloader(preloader, startTime));
       }
     }
-
-    /* ⛔ FORCE HIDE sau 10s */
-    setTimeout(() => {
-      hidePreloader(true);
-    }, MAX_DISPLAY_TIME);
   }
 
+  // Khởi chạy
   initPreloader();
 })();
