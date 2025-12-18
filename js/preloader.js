@@ -2,8 +2,8 @@
   "use strict";
 
   const STORAGE_KEY = "weddingPreloaderShown";
-  const MIN_DISPLAY_TIME = 4000; // 4s
-  const MAX_DISPLAY_TIME = 10000; // 10s
+  const MIN_DISPLAY_TIME = 2000; // 4s
+  const MAX_DISPLAY_TIME = 5000; // 7s
 
   let isHidden = false;
 
