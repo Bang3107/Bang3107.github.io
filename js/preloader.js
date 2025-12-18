@@ -1,71 +1,81 @@
-// Preloader with "First Visit Only" logic using sessionStorage
 (function () {
   "use strict";
 
   const STORAGE_KEY = "weddingPreloaderShown";
-  const MIN_DISPLAY_TIME = 3000; // 3 seconds minimum
+  const MIN_DISPLAY_TIME = 3000; // Tối thiểu 3 giây
+  const MAX_DISPLAY_TIME = 10000; // Tối đa 10 giây
 
-  // Check if this is first visit in session
+  // Biến cờ để đảm bảo không ẩn 2 lần
+  let isHidden = false;
+
+  // 1. Kiểm tra session xem đã vào chưa
   function isFirstVisit() {
     return !sessionStorage.getItem(STORAGE_KEY);
   }
 
-  // Mark as visited
+  // 2. Đánh dấu đã xem
   function markAsVisited() {
     sessionStorage.setItem(STORAGE_KEY, "true");
   }
 
-  // Initialize preloader
+  // 3. Khởi chạy Preloader
   function initPreloader() {
     const preloader = document.querySelector(".preloader-area");
     if (!preloader) return;
 
-    // If not first visit, hide immediately
+    // Nếu KHÔNG PHẢI lần đầu -> Ẩn ngay lập tức
     if (!isFirstVisit()) {
       preloader.style.display = "none";
       return;
     }
 
-    // First visit - show preloader
+    // Nếu LÀ lần đầu -> Hiện preloader
     document.body.classList.add("loading");
     preloader.style.display = "flex";
 
     const startTime = Date.now();
 
-    // Hide preloader function
+    // === Hàm ẩn Preloader (Core Logic) ===
     function hidePreloader() {
+      // Nếu đã ẩn rồi thì không làm gì nữa (tránh xung đột giữa Load và MaxTime)
+      if (isHidden) return;
+
       const elapsed = Date.now() - startTime;
+      // Tính thời gian cần chờ thêm (nếu load quá nhanh vẫn phải đợi đủ 3s)
       const remainingTime = Math.max(0, MIN_DISPLAY_TIME - elapsed);
+
+      // Đánh dấu là chuẩn bị ẩn
+      isHidden = true;
 
       setTimeout(() => {
         preloader.classList.add("fade-out");
         document.body.classList.remove("loading");
 
-        // Mark as visited
+        // Lưu trạng thái đã xem
         markAsVisited();
 
-        // Remove from DOM after fade animation
+        // Xóa khỏi DOM sau khi animation CSS chạy xong (0.8s)
         setTimeout(() => {
           preloader.style.display = "none";
         }, 800);
       }, remainingTime);
     }
 
-    // Wait for page to fully load
+    // === Xử lý sự kiện ===
+
+    // Trường hợp 1: Trang tải xong bình thường
     if (document.readyState === "complete") {
       hidePreloader();
     } else {
       window.addEventListener("load", hidePreloader);
     }
 
-    // Safety fallback: force hide after 10 seconds
+    // Trường hợp 2: Bắt buộc ẩn sau 10 giây (kể cả khi mạng lag chưa load xong trang)
     setTimeout(() => {
-      if (preloader && preloader.style.display !== "none") {
-        hidePreloader();
-      }
-    }, 10000);
+      hidePreloader();
+    }, MAX_DISPLAY_TIME);
   }
 
-  // Run immediately
+  // Chạy ngay
   initPreloader();
 })();
