@@ -2,80 +2,68 @@
   "use strict";
 
   const STORAGE_KEY = "weddingPreloaderShown";
-  const MIN_DISPLAY_TIME = 3000; // Tối thiểu 3 giây
-  const MAX_DISPLAY_TIME = 10000; // Tối đa 10 giây
+  const MIN_DISPLAY_TIME = 4000; // 4s
+  const MAX_DISPLAY_TIME = 10000; // 10s
 
-  // Biến cờ để đảm bảo không ẩn 2 lần
   let isHidden = false;
 
-  // 1. Kiểm tra session xem đã vào chưa
-  function isFirstVisit() {
-    return !sessionStorage.getItem(STORAGE_KEY);
+  function hasVisited() {
+    return sessionStorage.getItem(STORAGE_KEY);
   }
 
-  // 2. Đánh dấu đã xem
   function markAsVisited() {
     sessionStorage.setItem(STORAGE_KEY, "true");
   }
 
-  // 3. Khởi chạy Preloader
   function initPreloader() {
     const preloader = document.querySelector(".preloader-area");
     if (!preloader) return;
 
-    // Nếu KHÔNG PHẢI lần đầu -> Ẩn ngay lập tức
-    if (!isFirstVisit()) {
-      preloader.style.display = "none";
-      return;
-    }
-
-    // Nếu LÀ lần đầu -> Hiện preloader
     document.body.classList.add("loading");
     preloader.style.display = "flex";
 
     const startTime = Date.now();
+    const visited = hasVisited(); // ⭐ đã vào trước đó chưa
 
-    // === Hàm ẩn Preloader (Core Logic) ===
-    function hidePreloader() {
-      // Nếu đã ẩn rồi thì không làm gì nữa (tránh xung đột giữa Load và MaxTime)
+    function hidePreloader(force = false) {
       if (isHidden) return;
+      isHidden = true;
 
       const elapsed = Date.now() - startTime;
-      // Tính thời gian cần chờ thêm (nếu load quá nhanh vẫn phải đợi đủ 3s)
-      const remainingTime = Math.max(0, MIN_DISPLAY_TIME - elapsed);
-
-      // Đánh dấu là chuẩn bị ẩn
-      isHidden = true;
+      const delay = force ? 0 : Math.max(0, MIN_DISPLAY_TIME - elapsed);
 
       setTimeout(() => {
         preloader.classList.add("fade-out");
         document.body.classList.remove("loading");
 
-        // Lưu trạng thái đã xem
-        markAsVisited();
+        // Chỉ set key khi lần đầu
+        if (!visited) {
+          markAsVisited();
+        }
 
-        // Xóa khỏi DOM sau khi animation CSS chạy xong (0.8s)
         setTimeout(() => {
           preloader.style.display = "none";
         }, 800);
-      }, remainingTime);
+      }, delay);
     }
 
-    // === Xử lý sự kiện ===
-
-    // Trường hợp 1: Trang tải xong bình thường
-    if (document.readyState === "complete") {
-      hidePreloader();
+    /* 🔹 ĐÃ CÓ KEY → KHÔNG CHỜ LOAD, CHỈ HIỆN ĐỦ 3s */
+    if (visited) {
+      setTimeout(() => hidePreloader(), MIN_DISPLAY_TIME);
     } else {
-      window.addEventListener("load", hidePreloader);
+    /* 🔹 LẦN ĐẦU → CHỜ LOAD */
+      if (document.readyState === "complete") {
+        hidePreloader();
+      } else {
+        window.addEventListener("load", () => hidePreloader());
+      }
     }
 
-    // Trường hợp 2: Bắt buộc ẩn sau 10 giây (kể cả khi mạng lag chưa load xong trang)
+    /* ⛔ FORCE HIDE sau 10s */
     setTimeout(() => {
-      hidePreloader();
+      hidePreloader(true);
     }, MAX_DISPLAY_TIME);
   }
 
-  // Chạy ngay
   initPreloader();
 })();
