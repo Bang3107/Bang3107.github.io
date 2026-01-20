@@ -8,33 +8,33 @@ document.addEventListener("DOMContentLoaded", function () {
   // Feb 1 is 14/12 AL
   const lunarDates = [
     "14/12",
-    "15/12",
-    "16/12",
-    "17/12",
-    "18/12",
-    "19/12",
-    "20/12",
-    "21/12",
-    "22/12",
-    "23/12",
-    "24/12",
-    "25/12",
-    "26/12",
-    "27/12",
-    "28/12",
-    "29/12",
+    "15",
+    "16",
+    "17",
+    "18",
+    "19",
+    "20",
+    "21",
+    "22",
+    "23",
+    "24",
+    "25",
+    "26",
+    "27",
+    "28",
+    "29",
     "1/1",
-    "2/1",
-    "3/1",
-    "4/1",
-    "5/1",
-    "6/1",
-    "7/1",
-    "8/1",
-    "9/1",
-    "10/1",
-    "11/1",
-    "12/1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
   ];
 
   const daysInMonth = 28; // Feb 2026
@@ -45,24 +45,35 @@ document.addEventListener("DOMContentLoaded", function () {
             <h3>Tháng 2 / 2026</h3>
         </div>
         <div class="calendar-weekdays">
-            <div>CN</div><div>T2</div><div>T3</div><div>T4</div><div>T5</div><div>T6</div><div>T7</div>
+            <div>T2</div><div>T3</div><div>T4</div><div>T5</div><div>T6</div><div>T7</div><div class="sunday">CN</div>
         </div>
         <div class="calendar-days">
     `;
 
-  // Empty slots for previous month (if any)
-  for (let i = 0; i < firstDayOfWeek; i++) {
+  // Empty slots for previous month (Monday-first format)
+  const emptySlots = (firstDayOfWeek + 6) % 7;
+  for (let i = 0; i < emptySlots; i++) {
     html += `<div class="day empty"></div>`;
   }
 
   for (let day = 1; day <= daysInMonth; day++) {
     const isWeddingDay = day === weddingDate;
+    const isTetEve = day === 17; // Giao thừa Tết Nguyên Đán
     const lunar = lunarDates[day - 1];
-    const className = isWeddingDay ? "day wedding-day" : "day";
-    // const heartIcon = isWeddingDay ? '<span style="color: #d65d5d; font-size: 12px; position: absolute; top: 2px; right: 2px;">❤️</span>' : '';
+    
+    // Calculate day of week (Monday-first: 0=Mon, 6=Sun)
+    const dayOfWeekMonFirst = (firstDayOfWeek + day - 1 + 6) % 7;
+    const isSunday = dayOfWeekMonFirst === 6;
+    
+    let className = "day";
+    if (isWeddingDay) className += " wedding-day";
+    if (isSunday) className += " sunday";
+    
+    const tetIcon = isTetEve ? '<span class="tet-icon" style="position: absolute; top: 2px; right: 2px; font-size: 14px;">🎆</span>' : '';
 
     html += `
             <div class="${className}">
+                ${tetIcon}
                 <span class="solar-date">${day}</span>
                 <span class="lunar-date">${lunar}</span>
             </div>
