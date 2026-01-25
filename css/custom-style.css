@@ -58,7 +58,7 @@ strong {
   #about-us .row > div {
     margin-bottom: 40px;
   }
-  
+
   #about-us {
     padding-bottom: 60px !important;
   }
@@ -68,7 +68,7 @@ strong {
   #about-us {
     padding-bottom: 80px !important;
   }
-  
+
   #about-us .row > div:last-child {
     margin-bottom: 0;
   }
@@ -114,11 +114,11 @@ strong {
   .section-divider {
     padding: 40px 0 !important;
   }
-  
+
   .divider-quote p {
     font-size: 22px !important;
   }
-  
+
   .section-divider .btn {
     display: block !important;
     margin: 10px auto !important;
@@ -943,7 +943,8 @@ h3 {
   animation: sparkle 1.5s infinite;
 }
 @keyframes sparkle {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1) rotate(0deg);
     opacity: 1;
   }
