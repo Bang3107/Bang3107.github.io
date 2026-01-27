@@ -30,6 +30,7 @@
         iconMuted.style.display = "none";
         iconPlaying.style.display = "block";
         toggleBtn.style.background = "#E85D75";
+        const STORAGE_KEY = "music_is_playing";
         toggleBtn.title = "Tắt nhạc";
       }
     }
@@ -38,6 +39,9 @@
       if (audioPlayer.paused) {
         audioPlayer.play().catch(function (error) {
           console.log("Không thể phát nhạc:", error);
+            audioPlayer.preload = "auto";
+            audioPlayer.setAttribute("playsinline", "true"); // iOS Safari cho phép phát inline
+            audioPlayer.setAttribute("autoplay", ""); // cố gắng autoplay khi được phép
         });
       } else {
         audioPlayer.pause();
@@ -61,35 +65,86 @@
 
     const style = document.createElement("style");
     style.textContent = `
+
+          // Cố gắng phát nhạc; nếu bị chặn bởi chính sách autoplay, chờ tương tác người dùng rồi phát
+          function attemptPlay() {
+            const playPromise = audioPlayer.play();
+            if (playPromise && typeof playPromise.catch === "function") {
+              playPromise
+                .then(function () {
+                  // thành công, không cần làm gì; sự kiện "play" sẽ cập nhật icon
+                })
+                .catch(function (error) {
+                  console.log("Autoplay bị chặn, sẽ phát khi có tương tác:", error);
+                  // gợi ý trực quan để người dùng bấm
+                  toggleBtn.style.animation = "musicPulse 1.5s infinite";
+
+                  const resumeOnInteract = function () {
+                    audioPlayer.play().finally(function () {
+                      toggleBtn.style.animation = "";
+                    });
+                    removeInteracts();
+                  };
+
+                  const removeInteracts = function () {
+                    document.removeEventListener("click", resumeOnInteract);
+                    document.removeEventListener("touchstart", resumeOnInteract);
+                    document.removeEventListener("pointerdown", resumeOnInteract);
+                    document.removeEventListener("keydown", resumeOnInteract);
+                    document.removeEventListener("scroll", resumeOnInteract, { passive: true });
+                  };
+
+                  document.addEventListener("click", resumeOnInteract, { once: true });
+                  document.addEventListener("touchstart", resumeOnInteract, { once: true });
+                  document.addEventListener("pointerdown", resumeOnInteract, { once: true });
+                  document.addEventListener("keydown", resumeOnInteract, { once: true });
+                  document.addEventListener("scroll", resumeOnInteract, { once: true, passive: true });
+                });
+            }
+          }
       /* Remove black border/outline on the music toggle */
       #simpleMusicToggle {
         outline: none !important;
-        border: none !important;
-        box-shadow: none; /* remove dark shadow that can look like a black border */
-      }
+              attemptPlay();
       @keyframes musicPulse {
         0%, 100% { 
           transform: scale(1); 
           box-shadow: 0 4px 15px rgba(232, 93, 117, 0.35);
         }
-        50% { 
-          transform: scale(1.1); 
+          audioPlayer.addEventListener("play", function () {
+            updateIcon();
+            toggleBtn.style.animation = "";
+            try {
+              localStorage.setItem(STORAGE_KEY, "true");
+            } catch (e) {}
+          });
+          audioPlayer.addEventListener("pause", function () {
+            updateIcon();
+            try {
+              localStorage.setItem(STORAGE_KEY, "false");
+            } catch (e) {}
+          });
           box-shadow: 0 6px 20px rgba(232, 93, 117, 0.6);
         }
-      }
-      #simpleMusicToggle:hover {
-        transform: scale(1.08);
-        box-shadow: 0 6px 25px rgba(232, 93, 117, 0.5) !important;
-      }
-      #simpleMusicToggle:active {
-        transform: scale(0.95);
-      }
-      @media (max-width: 799px) {
-        #simpleMusicToggle {
-          bottom: 20px !important;
-          left: 20px !important;
-          width: 50px !important;
-          height: 50px !important;
+          // Khởi tạo icon ban đầu
+          updateIcon();
+
+          // Nếu được cấu hình autoPlay hoặc trước đó đang phát, cố gắng phát lại
+          const shouldAutoPlay =
+            (window.siteConfig && window.siteConfig.music && window.siteConfig.music.autoPlay) ||
+            (function () {
+              try {
+                return localStorage.getItem(STORAGE_KEY) === "true";
+              } catch (e) {
+                return false;
+              }
+            })();
+
+          if (shouldAutoPlay) {
+            setTimeout(function () {
+              attemptPlay();
+            }, 600);
+          }
         }
         #simpleMusicToggle svg {
           width: 24px !important;
