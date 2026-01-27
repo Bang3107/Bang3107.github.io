@@ -48,15 +48,11 @@
     audioPlayer.addEventListener("pause", updateIcon);
     audioPlayer.addEventListener("ended", updateIcon);
 
-    // Khởi tạo icon ban đầu
     updateIcon();
 
-    // Nếu autoPlay = true, tự động phát nhạc
     if (window.siteConfig && window.siteConfig.music && window.siteConfig.music.autoPlay) {
       setTimeout(function () {
-        audioPlayer.play().then(function() {
-          // Nhạc phát thành công, event "play" sẽ tự động cập nhật icon
-        }).catch(function (error) {
+        audioPlayer.play().catch(function (error) {
           console.log("Autoplay bị chặn:", error);
           toggleBtn.style.animation = "musicPulse 1.5s infinite";
         });
