@@ -39,10 +39,8 @@
         audioPlayer.play().catch(function (error) {
           console.log("Không thể phát nhạc:", error);
         });
-        localStorage.setItem("musicState", "playing");
       } else {
         audioPlayer.pause();
-        localStorage.setItem("musicState", "paused");
       }
     });
 
@@ -52,26 +50,14 @@
 
     updateIcon();
 
-    // Kiểm tra trạng thái đã lưu trong localStorage
-    const savedState = localStorage.getItem("musicState");
-    
-    setTimeout(function () {
-      if (savedState === "paused") {
-        // Nếu lần trước người dùng đã tắt nhạc, giữ nguyên trạng thái tắt
-        audioPlayer.pause();
-      } else {
-        // Lần đầu vào hoặc lần trước đang bật, tự động phát nhạc
-        if (window.siteConfig && window.siteConfig.music && window.siteConfig.music.autoPlay) {
-          audioPlayer.play().then(function() {
-            localStorage.setItem("musicState", "playing");
-          }).catch(function (error) {
-            console.log("Autoplay bị chặn:", error);
-            toggleBtn.style.animation = "musicPulse 1.5s infinite";
-          });
-        }
-      }
-    }, 1000);
-  }
+    if (window.siteConfig && window.siteConfig.music && window.siteConfig.music.autoPlay) {
+      setTimeout(function () {
+        audioPlayer.play().catch(function (error) {
+          console.log("Autoplay bị chặn:", error);
+          toggleBtn.style.animation = "musicPulse 1.5s infinite";
+        });
+      }, 1000);
+    }
 
     const style = document.createElement("style");
     style.textContent = `
