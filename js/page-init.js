@@ -347,8 +347,8 @@ const siteConfig = {
   },
   weddingDate: "2026-02-26",
   music: {
-    //  src: "https://cdn.biihappy.com/ziiweb/wedding-musics/IDo-911.mp3",
-    src: "./anh/tromvia.mp3",
+      src: "https://cdn.biihappy.com/ziiweb/wedding-musics/IDo-911.mp3",
+  //  src: "./anh/tromvia.mp3",
     autoPlay: true,
   },
 };
