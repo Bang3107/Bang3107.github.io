@@ -2,18 +2,26 @@
   "use strict";
 
   let audioPlayer = null;
+  const STORAGE_KEY_PLAYING = "site_music_playing";
+  const STORAGE_KEY_TIME = "site_music_time";
 
   function initSimpleMusicPlayer() {
-    // Tìm hoặc tạo audio element
+    // 1. Tìm hoặc tạo audio element
     audioPlayer = document.querySelector("audio");
     if (!audioPlayer) {
       audioPlayer = document.createElement("audio");
       audioPlayer.loop = true;
-      audioPlayer.volume = 0.3; // Giảm âm lượng xuống 30%
+      audioPlayer.volume = 0.3;
       if (window.siteConfig && window.siteConfig.music && window.siteConfig.music.src) {
         audioPlayer.src = window.siteConfig.music.src;
       }
       document.body.appendChild(audioPlayer);
+    }
+
+    // 2. Khôi phục thời gian phát nhạc từ LocalStorage (nếu có)
+    const savedTime = localStorage.getItem(STORAGE_KEY_TIME);
+    if (savedTime) {
+      audioPlayer.currentTime = parseFloat(savedTime);
     }
 
     const toggleBtn = document.getElementById("simpleMusicToggle");
@@ -34,48 +42,70 @@
       }
     }
 
+    // 3. Xử lý click và LƯU TRẠNG THÁI
     toggleBtn.addEventListener("click", function () {
       if (audioPlayer.paused) {
-        audioPlayer.play().catch(function (error) {
-          console.log("Không thể phát nhạc:", error);
-        });
+        audioPlayer
+          .play()
+          .then(() => {
+            localStorage.setItem(STORAGE_KEY_PLAYING, "true"); // Lưu trạng thái đang bật
+          })
+          .catch(function (error) {
+            console.log("Không thể phát nhạc:", error);
+          });
       } else {
         audioPlayer.pause();
+        localStorage.setItem(STORAGE_KEY_PLAYING, "false"); // Lưu trạng thái đang tắt
       }
     });
 
     audioPlayer.addEventListener("play", updateIcon);
     audioPlayer.addEventListener("pause", updateIcon);
-    audioPlayer.addEventListener("ended", updateIcon);
+
+    // 4. Lưu thời gian nhạc liên tục khi đang phát (để F5 hát tiếp đoạn đó)
+    // Lưu mỗi khi nhạc tắt hoặc trang bị đóng/reload
+    window.addEventListener("beforeunload", function () {
+      localStorage.setItem(STORAGE_KEY_TIME, audioPlayer.currentTime);
+    });
 
     updateIcon();
 
-    if (window.siteConfig && window.siteConfig.music && window.siteConfig.music.autoPlay) {
+    // 5. Kiểm tra LocalStorage để tự động phát lại khi F5
+    const shouldPlay = localStorage.getItem(STORAGE_KEY_PLAYING) === "true";
+    const configAutoPlay = window.siteConfig && window.siteConfig.music && window.siteConfig.music.autoPlay;
+
+    if (shouldPlay || configAutoPlay) {
+      // Delay nhỏ để đảm bảo DOM sẵn sàng và tránh xung đột
       setTimeout(function () {
-        audioPlayer.play().catch(function (error) {
-          console.log("Autoplay bị chặn:", error);
-          toggleBtn.style.animation = "musicPulse 1.5s infinite";
-        });
-      }, 1000);
+        const playPromise = audioPlayer.play();
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              // Phát thành công
+              console.log("Đã khôi phục trạng thái phát nhạc.");
+            })
+            .catch(function (error) {
+              // Autoplay bị chặn bởi trình duyệt
+              console.log("Autoplay bị chặn (cần tương tác người dùng):", error);
+              localStorage.setItem(STORAGE_KEY_PLAYING, "false"); // Reset về false nếu bị chặn
+              toggleBtn.style.animation = "musicPulse 1.5s infinite"; // Nhắc người dùng bấm
+              updateIcon(); // Cập nhật lại icon về trạng thái tắt
+            });
+        }
+      }, 500);
     }
 
+    // --- Phần CSS giữ nguyên ---
     const style = document.createElement("style");
     style.textContent = `
-      /* Remove black border/outline on the music toggle */
       #simpleMusicToggle {
         outline: none !important;
         border: none !important;
-        box-shadow: none; /* remove dark shadow that can look like a black border */
+        box-shadow: none;
       }
       @keyframes musicPulse {
-        0%, 100% { 
-          transform: scale(1); 
-          box-shadow: 0 4px 15px rgba(232, 93, 117, 0.35);
-        }
-        50% { 
-          transform: scale(1.1); 
-          box-shadow: 0 6px 20px rgba(232, 93, 117, 0.6);
-        }
+        0%, 100% { transform: scale(1); box-shadow: 0 4px 15px rgba(232, 93, 117, 0.35); }
+        50% { transform: scale(1.1); box-shadow: 0 6px 20px rgba(232, 93, 117, 0.6); }
       }
       #simpleMusicToggle:hover {
         transform: scale(1.08);
