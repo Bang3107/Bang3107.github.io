@@ -48,15 +48,25 @@
     audioPlayer.addEventListener("pause", updateIcon);
     audioPlayer.addEventListener("ended", updateIcon);
 
-    updateIcon();
-
+    // Nếu autoPlay = true, hiển thị icon playing ngay từ đầu
     if (window.siteConfig && window.siteConfig.music && window.siteConfig.music.autoPlay) {
+      iconMuted.style.display = "none";
+      iconPlaying.style.display = "block";
+      toggleBtn.style.background = "#E85D75";
+      toggleBtn.title = "Tắt nhạc";
+      
       setTimeout(function () {
         audioPlayer.play().catch(function (error) {
           console.log("Autoplay bị chặn:", error);
+          // Nếu autoplay bị chặn, chuyển về icon muted
+          iconMuted.style.display = "block";
+          iconPlaying.style.display = "none";
+          toggleBtn.title = "Bật nhạc";
           toggleBtn.style.animation = "musicPulse 1.5s infinite";
         });
       }, 1000);
+    } else {
+      updateIcon();
     }
 
     const style = document.createElement("style");
