@@ -39,9 +39,9 @@
       if (audioPlayer.paused) {
         audioPlayer.play().catch(function (error) {
           console.log("Không thể phát nhạc:", error);
-            audioPlayer.preload = "auto";
-            audioPlayer.setAttribute("playsinline", "true"); // iOS Safari cho phép phát inline
-            audioPlayer.setAttribute("autoplay", ""); // cố gắng autoplay khi được phép
+          audioPlayer.preload = "auto";
+          audioPlayer.setAttribute("playsinline", "true"); // iOS Safari cho phép phát inline
+          audioPlayer.setAttribute("autoplay", ""); // cố gắng autoplay khi được phép
         });
       } else {
         audioPlayer.pause();
